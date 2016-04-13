@@ -86,7 +86,6 @@ namespace NuGet.Protocol.FuncTest
         [InlineData(@"http://progetserver:8081/nuget/nuget")]
         [InlineData(@"http://klondikeserver:8081/api/odata/")]
         [InlineData(@"http://artifactory:8081/artifactory/api/nuget/nuget")]
-        [InlineData(@"http://nugetserverendpoint.azurewebsites.net/nuget")]
         [InlineData(@"https://www.myget.org/F/myget-server-test/api/v2")]
         public async Task V2FeedParser_NormalizedVersion(string packageSource)
         {
@@ -109,7 +108,6 @@ namespace NuGet.Protocol.FuncTest
         [InlineData(@"http://progetserver:8081/nuget/nuget")]
         [InlineData(@"http://klondikeserver:8081/api/odata/")]
         [InlineData(@"http://artifactory:8081/artifactory/api/nuget/nuget")]
-        [InlineData(@"http://nugetserverendpoint.azurewebsites.net/nuget")]
         [InlineData(@"https://www.myget.org/F/myget-server-test/api/v2")]
         public async Task V2FeedParser_DownloadFromIdentityFromDifferentServer(string packageSource)
         {
@@ -138,7 +136,6 @@ namespace NuGet.Protocol.FuncTest
         [InlineData(@"http://nexusservertest:8081/nexus/service/local/nuget/NuGet/")]
         [InlineData(@"http://klondikeserver:8081/api/odata/")]
         [InlineData(@"http://artifactory:8081/artifactory/api/nuget/nuget")]
-        [InlineData(@"http://nugetserverendpoint.azurewebsites.net/nuget")]
         [InlineData(@"https://www.myget.org/F/myget-server-test/api/v2")]
         public async Task V2FeedParser_SearchWithPortableFramework(string packageSource)
         {
@@ -168,7 +165,6 @@ namespace NuGet.Protocol.FuncTest
         [InlineData(@"http://progetserver:8081/nuget/nuget")]
         [InlineData(@"http://klondikeserver:8081/api/odata/")]
         [InlineData(@"http://artifactory:8081/artifactory/api/nuget/nuget")]
-        [InlineData(@"http://nugetserverendpoint.azurewebsites.net/nuget")]
         [InlineData(@"https://www.myget.org/F/myget-server-test/api/v2")]
         public async Task V2FeedParser_Search(string packageSource)
         {
@@ -198,7 +194,6 @@ namespace NuGet.Protocol.FuncTest
         [InlineData(@"http://progetserver:8081/nuget/nuget")]
         [InlineData(@"http://klondikeserver:8081/api/odata/")]
         [InlineData(@"http://artifactory:8081/artifactory/api/nuget/nuget")]
-        [InlineData(@"http://nugetserverendpoint.azurewebsites.net/nuget")]
         [InlineData(@"https://www.myget.org/F/myget-server-test/api/v2")]
         public async Task V2FeedParser_SearchWithPrerelease(string packageSource)
         {
