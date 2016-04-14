@@ -12,7 +12,6 @@ namespace NuGet.Protocol.FuncTest
         public static Tuple<string, string> ReadCredential(string feedName)
         {
             string fullPath = NuGetEnvironment.GetFolderPath(NuGetFolderPath.UserSettingsDirectory);
-            Console.WriteLine(fullPath);
             using (Stream configStream = File.OpenRead(Path.Combine(fullPath, "test.config")))
             {
                 var doc = XDocument.Load(XmlReader.Create(configStream));
