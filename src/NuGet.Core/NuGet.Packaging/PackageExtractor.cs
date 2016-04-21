@@ -178,8 +178,7 @@ namespace NuGet.Packaging
                 throw new ArgumentNullException(nameof(versionFolderPathContext));
             }
 
-            var packagePathResolver = new VersionFolderPathResolver(
-                versionFolderPathContext.PackagesDirectory, versionFolderPathContext.NormalizeFileNames);
+            var packagePathResolver = new VersionFolderPathResolver(versionFolderPathContext.PackagesDirectory);
 
             var packageIdentity = versionFolderPathContext.Package;
             var logger = versionFolderPathContext.Logger;
@@ -271,9 +270,10 @@ namespace NuGet.Packaging
                                 if ((packageSaveMode & PackageSaveMode.Files) == PackageSaveMode.Files)
                                 {
                                     var nupkgFileName = Path.GetFileName(targetNupkg);
+                                    var nuspecFileName = Path.GetFileName(targetNuspec);
                                     var hashFileName = Path.GetFileName(hashPath);
                                     var packageFiles = packageReader.GetFiles()
-                                        .Where(file => ShouldInclude(file, nupkgFileName, nuspecFile, hashFileName));
+                                        .Where(file => ShouldInclude(file, nupkgFileName, nuspecFileName, hashFileName));
                                     var packageFileExtractor = new PackageFileExtractor(
                                         packageFiles,
                                         versionFolderPathContext.XmlDocFileSaveMode);
@@ -364,7 +364,7 @@ namespace NuGet.Packaging
         private static bool ShouldInclude(
             string fullName,
             string nupkgFileName,
-            string nuspecFile,
+            string nuspecFileName,
             string hashFileName)
         {
             // Not all the files from a zip file are needed
@@ -390,7 +390,7 @@ namespace NuGet.Packaging
 
             if (string.Equals(fullName, nupkgFileName, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(fullName, hashFileName, StringComparison.OrdinalIgnoreCase)
-                || string.Equals(fullName, nuspecFile, StringComparison.OrdinalIgnoreCase))
+                || string.Equals(fullName, nuspecFileName, StringComparison.OrdinalIgnoreCase))
             {
                 // Return false when the fullName is the nupkg file or the hash file.
                 // Some packages accidentally have the nupkg file or the nupkg hash file in the package.

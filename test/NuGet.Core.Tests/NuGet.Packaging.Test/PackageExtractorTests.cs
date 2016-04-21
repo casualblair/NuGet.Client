@@ -699,14 +699,13 @@ namespace NuGet.Packaging.Test
                             NullLogger.Instance,
                             fixNuspecIdCasing: false,
                             packageSaveMode: PackageSaveMode.Nupkg | PackageSaveMode.Files,
-                            normalizeFileNames: false,
                             xmlDocFileSaveMode: XmlDocFileSaveMode.None),
                         CancellationToken.None);
 
                     // Assert
-                    Assert.True(File.Exists(Path.Combine(root, "A", "2.0.3", "A.2.0.3.nupkg")));
-                    Assert.False(File.Exists(Path.Combine(root, "A", "2.0.3", "A.nuspec")));
-                    Assert.True(File.Exists(Path.Combine(root, "A", "2.0.3", "lib", "net45", "A.dll")));
+                    Assert.True(File.Exists(Path.Combine(root, "a", "2.0.3", "a.2.0.3.nupkg")), "The .nupkg should exist.");
+                    Assert.False(File.Exists(Path.Combine(root, "a", "2.0.3", "a.nuspec")), "The .nuspec should not exist.");
+                    Assert.True(File.Exists(Path.Combine(root, "a", "2.0.3", "lib", "net45", "A.dll")), "The asset should exist.");
                 }
             }
         }
@@ -735,14 +734,13 @@ namespace NuGet.Packaging.Test
                             NullLogger.Instance,
                             fixNuspecIdCasing: false,
                             packageSaveMode: PackageSaveMode.Nuspec | PackageSaveMode.Files,
-                            normalizeFileNames: false,
                             xmlDocFileSaveMode: XmlDocFileSaveMode.None),
                         CancellationToken.None);
 
                     // Assert
-                    Assert.False(File.Exists(Path.Combine(root, "A", "2.0.3", "A.2.0.3.nupkg")));
-                    Assert.True(File.Exists(Path.Combine(root, "A", "2.0.3", "A.nuspec")));
-                    Assert.True(File.Exists(Path.Combine(root, "A", "2.0.3", "lib", "net45", "A.dll")));
+                    Assert.False(File.Exists(Path.Combine(root, "a", "2.0.3", "a.2.0.3.nupkg")), "The .nupkg should not exist.");
+                    Assert.True(File.Exists(Path.Combine(root, "a", "2.0.3", "a.nuspec")), "The .nuspec should exist.");
+                    Assert.True(File.Exists(Path.Combine(root, "a", "2.0.3", "lib", "net45", "A.dll")), "The asset should exist.");
 
                 }
             }
@@ -772,14 +770,13 @@ namespace NuGet.Packaging.Test
                             NullLogger.Instance,
                             fixNuspecIdCasing: false,
                             packageSaveMode: PackageSaveMode.Nupkg | PackageSaveMode.Nuspec,
-                            normalizeFileNames: false,
                             xmlDocFileSaveMode: XmlDocFileSaveMode.None),
                         CancellationToken.None);
 
                     // Assert
-                    Assert.True(File.Exists(Path.Combine(root, "A", "2.0.3", "A.2.0.3.nupkg")));
-                    Assert.True(File.Exists(Path.Combine(root, "A", "2.0.3", "A.nuspec")));
-                    Assert.False(File.Exists(Path.Combine(root, "A", "2.0.3", "lib", "net45", "A.dll")));
+                    Assert.True(File.Exists(Path.Combine(root, "a", "2.0.3", "a.2.0.3.nupkg")), "The .nupkg should exist.");
+                    Assert.True(File.Exists(Path.Combine(root, "a", "2.0.3", "a.nuspec")), "The .nuspec should exist.");
+                    Assert.False(File.Exists(Path.Combine(root, "a", "2.0.3", "lib", "net45", "A.dll")), "The asset should not exist.");
                 }
             }
         }
