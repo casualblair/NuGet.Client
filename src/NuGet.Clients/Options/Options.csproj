@@ -4,8 +4,13 @@
   <PropertyGroup>
     <PackagesDirectory>$(UserProfile)\.nuget\packages</PackagesDirectory>
     <ResolveNuGetPackages>true</ResolveNuGetPackages>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '14.0'">
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '15.0'">
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ProjectGuid>{53AB7187-CDF3-48B5-B90E-8919D3CB904D}</ProjectGuid>
@@ -115,9 +120,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
+    <None Include="project.dev14.json" />
+    <None Include="project.dev15.json" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\..\build\common.targets" />
   <Import Project="..\..\..\build\sign.targets" />
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '14.0'">
+    <PreBuildEvent>copy /y "$(MSBuildProjectDirectory)\project.dev14.json" "$(MSBuildProjectDirectory)\project.json"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VisualStudioVersion)' == '15.0'">
+    <PreBuildEvent>copy /y "$(MSBuildProjectDirectory)\project.dev15.json" "$(MSBuildProjectDirectory)\project.json"</PreBuildEvent>
+  </PropertyGroup>
 </Project>
