@@ -34,7 +34,6 @@ namespace Commands.Test
                     identity,
                     packagesDir,
                     logger,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -77,7 +76,6 @@ namespace Commands.Test
                     identity,
                     packagesDir,
                     logger,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -119,7 +117,6 @@ namespace Commands.Test
                     identity,
                     packagesDir,
                     logger,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -172,7 +169,6 @@ namespace Commands.Test
                     identity,
                     packagesDir,
                     logger,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -230,7 +226,6 @@ namespace Commands.Test
                     identity,
                     packagesDir,
                     logger,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -286,7 +281,6 @@ namespace Commands.Test
                     identity,
                     packagesDir,
                     logger,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -352,7 +346,6 @@ namespace Commands.Test
                     package,
                     packagesDirectory,
                     NullLogger.Instance,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -391,7 +384,6 @@ namespace Commands.Test
                     package,
                     packagesDirectory,
                     NullLogger.Instance,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Nuspec | PackageSaveMode.Nupkg,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -434,7 +426,6 @@ namespace Commands.Test
                     package,
                     packagesDirectory,
                     NullLogger.Instance,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -489,7 +480,6 @@ namespace Commands.Test
                     package,
                     packagesDirectory,
                     NullLogger.Instance,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -542,7 +532,6 @@ namespace Commands.Test
                     package,
                     packagesDirectory,
                     NullLogger.Instance,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 
@@ -580,7 +569,6 @@ namespace Commands.Test
                     package,
                     packagesDirectory,
                     NullLogger.Instance,
-                    fixNuspecIdCasing: false,
                     packageSaveMode: PackageSaveMode.Nupkg | PackageSaveMode.Nuspec,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 

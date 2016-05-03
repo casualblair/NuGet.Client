@@ -316,7 +316,6 @@ namespace NuGet.Commands
                 packageIdentity,
                 packagesDirectory,
                 _logger,
-                fixNuspecIdCasing: true,
                 packageSaveMode: _request.PackageSaveMode,
                 xmlDocFileSaveMode: _request.XmlDocFileSaveMode);
 

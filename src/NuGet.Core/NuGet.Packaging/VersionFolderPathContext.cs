@@ -10,7 +10,6 @@ namespace NuGet.Packaging
         public PackageIdentity Package { get; }
         public string PackagesDirectory { get; }
         public ILogger Logger { get; }
-        public bool FixNuspecIdCasing { get; }
         public PackageSaveMode PackageSaveMode { get; }
         public XmlDocFileSaveMode XmlDocFileSaveMode { get; set; }
 
@@ -18,7 +17,6 @@ namespace NuGet.Packaging
             PackageIdentity package,
             string packagesDirectory,
             ILogger logger,
-            bool fixNuspecIdCasing,
             PackageSaveMode packageSaveMode,
             XmlDocFileSaveMode xmlDocFileSaveMode)
         {
@@ -43,7 +41,6 @@ namespace NuGet.Packaging
             Package = package;
             PackagesDirectory = packagesDirectory;
             Logger = logger;
-            FixNuspecIdCasing = fixNuspecIdCasing;
             PackageSaveMode = packageSaveMode;
             XmlDocFileSaveMode = xmlDocFileSaveMode;
         }

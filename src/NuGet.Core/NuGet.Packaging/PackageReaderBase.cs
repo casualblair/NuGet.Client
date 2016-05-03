@@ -88,8 +88,8 @@ namespace NuGet.Packaging
             // PackageArchiveReader and PackageFolderReader.
 
             // Find all nuspecs in the root folder.
-            var nuspecPaths = GetFiles().Where(entryPath => IsRoot(entryPath)
-                && entryPath.EndsWith(PackagingCoreConstants.NuspecExtension, StringComparison.OrdinalIgnoreCase))
+            var nuspecPaths = GetFiles()
+                .Where(entryPath => PackageHelper.IsManifest(entryPath))
                 .ToList();
 
             if (nuspecPaths.Count == 0)
@@ -118,13 +118,6 @@ namespace NuGet.Packaging
 
                 return _nuspecReader;
             }
-        }
-
-        private static readonly char[] Slashes = new char[] { '/', '\\' };
-        private static bool IsRoot(string path)
-        {
-            // True if the path contains no directory slashes.
-            return path.IndexOfAny(Slashes) == -1;
         }
 
         #endregion

@@ -102,7 +102,6 @@ namespace NuGet.Protocol
                 packageIdentity,
                 globalPackagesFolder,
                 logger,
-                fixNuspecIdCasing: false,
                 packageSaveMode: PackageSaveMode.Defaultv3,
                 xmlDocFileSaveMode: PackageExtractionBehavior.XmlDocFileSaveMode);
 

@@ -29,7 +29,6 @@ namespace NuGet.Test.Utility
                     package: reader.GetIdentity(),
                     packagesDirectory: globalFolder,
                     logger: Common.NullLogger.Instance,
-                    fixNuspecIdCasing: true,
                     packageSaveMode: PackageSaveMode.Defaultv3,
                     xmlDocFileSaveMode: XmlDocFileSaveMode.None);
 

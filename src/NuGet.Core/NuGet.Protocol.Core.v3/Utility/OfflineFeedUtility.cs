@@ -192,7 +192,6 @@ namespace NuGet.Protocol.Core.Types
                             packageIdentity,
                             source,
                             logger,
-                            fixNuspecIdCasing: false,
                             packageSaveMode: packageSaveMode,
                             xmlDocFileSaveMode: PackageExtractionBehavior.XmlDocFileSaveMode);
 
