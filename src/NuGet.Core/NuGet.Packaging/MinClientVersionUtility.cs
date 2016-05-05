@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using NuGet.Common;
 using NuGet.Packaging.Core;
 using NuGet.Versioning;
@@ -53,7 +52,7 @@ namespace NuGet.Packaging
             // Read the minClientVersion from the nuspec, this may be null
             var packageMinClientVersion = nuspecReader.GetMinClientVersion();
 
-            return (packageMinClientVersion != null && !IsMinClientVersionCompatible(packageMinClientVersion));
+            return (packageMinClientVersion == null || IsMinClientVersionCompatible(packageMinClientVersion));
         }
 
         /// <summary>
@@ -68,7 +67,9 @@ namespace NuGet.Packaging
 
             var clientVersion = GetNuGetClientVersion();
 
-            return (clientVersion < packageMinClientVersion);
+            var result = (packageMinClientVersion <= clientVersion);
+
+            return result;
         }
 
         /// <summary>

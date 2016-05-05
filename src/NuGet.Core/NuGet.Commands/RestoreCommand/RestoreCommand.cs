@@ -75,7 +75,32 @@ namespace NuGet.Commands
 
             var contextForProject = CreateRemoteWalkContext(_request);
 
-            var graphs = await ExecuteRestoreAsync(localRepository, contextForProject, token);
+            var graphs = Enumerable.Empty<RestoreTargetGraph>();
+
+            try
+            {
+                graphs = await ExecuteRestoreAsync(localRepository, contextForProject, token);
+            }
+            catch (NuGetVersionNotSatisfiedException ex)
+            {
+                // A package with a higher minClientVersion than the current client was encountered
+                _logger.LogError(ex.Message);
+
+                var emptyMSBuildResult = new MSBuildRestoreResult(
+                    _request.Project.Name,
+                    Path.GetDirectoryName(_request.Project.FilePath),
+                    success: false);
+
+                return new RestoreResult(
+                    success: false,
+                    restoreGraphs: graphs,
+                    compatibilityCheckResults: Enumerable.Empty<CompatibilityCheckResult>(),
+                    lockFile: new LockFile(),
+                    previousLockFile: _request.ExistingLockFile,
+                    lockFilePath: _request.LockFilePath,
+                    msbuild: emptyMSBuildResult,
+                    toolRestoreResults: Enumerable.Empty<ToolRestoreResult>());
+            }
 
             // Only execute tool restore if the request lock file version is 2 or greater.
             // Tools did not exist prior to v2 lock files.
@@ -376,15 +401,37 @@ namespace NuGet.Commands
                     new Dictionary<NuGetFramework, RuntimeGraph>(),
                     _runtimeGraphCacheByPackage);
                 var projectRestoreCommand = new ProjectRestoreCommand(_logger, projectRestoreRequest);
-                var result = await projectRestoreCommand.TryRestore(
-                    tool.LibraryRange,
-                    projectFrameworkRuntimePairs,
-                    allInstalledPackages,
-                    localRepository,
-                    walker,
-                    contextForTool,
-                    writeToLockFile: true,
-                    token: token);
+
+                Tuple<bool, List<RestoreTargetGraph>, RuntimeGraph> result = null;
+
+                try
+                {
+                    result = await projectRestoreCommand.TryRestore(
+                        tool.LibraryRange,
+                        projectFrameworkRuntimePairs,
+                        allInstalledPackages,
+                        localRepository,
+                        walker,
+                        contextForTool,
+                        writeToLockFile: true,
+                        token: token);
+                }
+                catch (NuGetVersionNotSatisfiedException ex)
+                {
+                    // A tool package does not meet the minClientVersion constraint, fail
+                    _logger.LogError(ex.Message);
+
+                    results.Add(new ToolRestoreResult(
+                        tool.LibraryRange.Name,
+                        success: false,
+                        lockFileTarget: null,
+                        fileTargetLibrary: null,
+                        lockFilePath: null,
+                        lockFile: new LockFile(),
+                        previousLockFile: null));
+
+                    continue;
+                }
 
                 var graphs = result.Item2;
                 if (!result.Item1)
@@ -424,7 +471,7 @@ namespace NuGet.Commands
                     toolSuccess = false;
                     _success = false;
                 }
-                
+
                 var checkResults = VerifyCompatibility(
                     toolPackageSpec,
                     new Dictionary<RestoreTargetGraph, Dictionary<string, LibraryIncludeFlags>>(),

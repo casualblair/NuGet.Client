@@ -22,7 +22,7 @@ namespace NuGet.Common {
     // with the /str option, or rebuild your VS project.
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Strings {
+    internal class Strings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -35,7 +35,7 @@ namespace NuGet.Common {
         ///    Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NuGet.Common.Strings", typeof(Strings).GetTypeInfo().Assembly);
@@ -50,7 +50,7 @@ namespace NuGet.Common {
         ///    resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -62,7 +62,7 @@ namespace NuGet.Common {
         /// <summary>
         ///    Looks up a localized string similar to Unable to determine the current NuGet client version..
         /// </summary>
-        public static string UnableToDetemineClientVersion {
+        internal static string UnableToDetemineClientVersion {
             get {
                 return ResourceManager.GetString("UnableToDetemineClientVersion", resourceCulture);
             }
@@ -71,7 +71,7 @@ namespace NuGet.Common {
         /// <summary>
         ///    Looks up a localized string similar to Unable to obtain lock file access on &apos;{0}&apos; for operations on &apos;{1}&apos;. This may mean that a different user or administator is holding this lock and that this process does not have permission to access it. If no other process is currently performing an operation on this file it may mean that an earlier NuGet process crashed and left an inaccessible lock file, in this case removing the file &apos;{0}&apos; will allow NuGet to continue..
         /// </summary>
-        public static string UnauthorizedLockFail {
+        internal static string UnauthorizedLockFail {
             get {
                 return ResourceManager.GetString("UnauthorizedLockFail", resourceCulture);
             }
@@ -80,7 +80,7 @@ namespace NuGet.Common {
         /// <summary>
         ///    Looks up a localized string similar to Hash algorithm &apos;{0}&apos; is unsupported. Supported algorithms include: SHA512 and SHA256..
         /// </summary>
-        public static string UnsupportedHashAlgorithm {
+        internal static string UnsupportedHashAlgorithm {
             get {
                 return ResourceManager.GetString("UnsupportedHashAlgorithm", resourceCulture);
             }

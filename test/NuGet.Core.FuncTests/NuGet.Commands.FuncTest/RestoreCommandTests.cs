@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using NuGet.Configuration;
 using NuGet.Frameworks;
 using NuGet.LibraryModel;
+using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.ProjectModel;
 using NuGet.Protocol.Core.Types;
@@ -21,6 +22,200 @@ namespace NuGet.Commands.FuncTest
 {
     public class RestoreCommandTests
     {
+        [Fact]
+        public async Task RestoreCommand_VerifyMinClientVersionV2Source()
+        {
+            // Arrange
+            var sources = new List<PackageSource>();
+            sources.Add(new PackageSource("https://www.nuget.org/api/v2/"));
+
+            using (var packagesDir = TestFileSystemUtility.CreateRandomTestFolder())
+            using (var projectDir = TestFileSystemUtility.CreateRandomTestFolder())
+            {
+                var specPath = Path.Combine(projectDir, "TestProject", "project.json");
+                var spec = JsonPackageSpecReader.GetPackageSpec(BasicConfig.ToString(), "TestProject", specPath);
+
+                // This package has a minclientversion of 9999
+                AddDependency(spec, "TestPackage.MinClientVersion", "1.0.0");
+
+                var logger = new TestLogger();
+                var request = new RestoreRequest(spec, sources, packagesDir, logger);
+
+                request.LockFilePath = Path.Combine(projectDir, "project.lock.json");
+
+                var lockFileFormat = new LockFileFormat();
+
+                // Act
+                var command = new RestoreCommand(request);
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                Assert.True(1 == logger.Errors, logger.ShowErrors());
+                Assert.Contains("'TestPackage.MinClientVersion 1.0.0' package requires NuGet client version '9.9999.0' or above", logger.ErrorMessages.Single());
+                Assert.False(result.Success);
+                Assert.Equal(0, result.GetAllInstalled().Count());
+                Assert.Equal(0, result.GetAllUnresolved().Count());
+                Assert.Equal(0, result.RestoreGraphs.Count());
+                Assert.Equal(0, result.ToolRestoreResults.Count());
+                Assert.Null(result.LockFile);
+            }
+        }
+
+        [Fact]
+        public async Task RestoreCommand_VerifyMinClientVersionV3Source()
+        {
+            // Arrange
+            var sources = new List<PackageSource>();
+            sources.Add(new PackageSource("https://api.nuget.org/v3/index.json"));
+
+            using (var packagesDir = TestFileSystemUtility.CreateRandomTestFolder())
+            using (var projectDir = TestFileSystemUtility.CreateRandomTestFolder())
+            {
+                var specPath = Path.Combine(projectDir, "TestProject", "project.json");
+                var spec = JsonPackageSpecReader.GetPackageSpec(BasicConfig.ToString(), "TestProject", specPath);
+
+                // This package has a minclientversion of 9999
+                AddDependency(spec, "TestPackage.MinClientVersion", "1.0.0");
+
+                var logger = new TestLogger();
+                var request = new RestoreRequest(spec, sources, packagesDir, logger);
+
+                request.LockFilePath = Path.Combine(projectDir, "project.lock.json");
+
+                var lockFileFormat = new LockFileFormat();
+
+                // Act
+                var command = new RestoreCommand(request);
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                Assert.True(1 == logger.Errors, logger.ShowErrors());
+                Assert.Contains("'TestPackage.MinClientVersion 1.0.0' package requires NuGet client version '9.9999.0' or above", logger.ErrorMessages.Single());
+                Assert.False(result.Success);
+                Assert.Equal(0, result.GetAllInstalled().Count());
+                Assert.Equal(0, result.GetAllUnresolved().Count());
+                Assert.Equal(0, result.RestoreGraphs.Count());
+                Assert.Equal(0, result.ToolRestoreResults.Count());
+                Assert.Null(result.LockFile);
+            }
+        }
+
+        [Fact]
+        public async Task RestoreCommand_VerifyMinClientVersionLocalFolder()
+        {
+            // Arrange
+            var sources = new List<PackageSource>();
+
+            using (var sourceDir = TestFileSystemUtility.CreateRandomTestFolder())
+            using (var packagesDir = TestFileSystemUtility.CreateRandomTestFolder())
+            using (var projectDir = TestFileSystemUtility.CreateRandomTestFolder())
+            {
+                sources.Add(new PackageSource(sourceDir));
+                var specPath = Path.Combine(projectDir, "TestProject", "project.json");
+                var spec = JsonPackageSpecReader.GetPackageSpec(BasicConfig.ToString(), "TestProject", specPath);
+
+                // This package has a minclientversion of 9.9999.0
+                AddDependency(spec, "packageA", "1.0.0");
+
+                var logger = new TestLogger();
+                var request = new RestoreRequest(spec, sources, packagesDir, logger);
+
+                request.LockFilePath = Path.Combine(projectDir, "project.lock.json");
+
+                var lockFileFormat = new LockFileFormat();
+
+                var packageContext = new SimpleTestPackageContext()
+                {
+                    Id = "packageA",
+                    Version = "1.0.0",
+                    MinClientVersion = "9.9.9"
+                };
+
+                SimpleTestPackageUtility.CreatePackages(sourceDir, packageContext);
+
+                // Act
+                var command = new RestoreCommand(request);
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                Assert.True(1 == logger.Errors, logger.ShowErrors());
+                Assert.Contains("'packageA 1.0.0' package requires NuGet client version '9.9.9' or above", logger.ErrorMessages.Single());
+                Assert.False(result.Success);
+                Assert.Equal(0, result.GetAllInstalled().Count());
+                Assert.Equal(0, result.GetAllUnresolved().Count());
+                Assert.Equal(0, result.RestoreGraphs.Count());
+                Assert.Equal(0, result.ToolRestoreResults.Count());
+                Assert.Null(result.LockFile);
+            }
+        }
+
+        [Fact]
+        public async Task RestoreCommand_VerifyMinClientVersionAlreadyInstalled()
+        {
+            // Arrange
+            var sources = new List<PackageSource>();
+
+            using (var emptyDir = TestFileSystemUtility.CreateRandomTestFolder())
+            using (var workingDir = TestFileSystemUtility.CreateRandomTestFolder())
+            using (var packagesDir = TestFileSystemUtility.CreateRandomTestFolder())
+            using (var projectDir = TestFileSystemUtility.CreateRandomTestFolder())
+            {
+                sources.Add(new PackageSource(emptyDir));
+                var specPath = Path.Combine(projectDir, "TestProject", "project.json");
+                var spec = JsonPackageSpecReader.GetPackageSpec(BasicConfig.ToString(), "TestProject", specPath);
+
+                // This package has a minclientversion of 9.9999.0
+                AddDependency(spec, "packageA", "1.0.0");
+
+                var logger = new TestLogger();
+                var request = new RestoreRequest(spec, sources, packagesDir, logger);
+
+                request.LockFilePath = Path.Combine(projectDir, "project.lock.json");
+
+                var lockFileFormat = new LockFileFormat();
+
+                var packageContext = new SimpleTestPackageContext()
+                {
+                    Id = "packageA",
+                    Version = "1.0.0",
+                    MinClientVersion = "9.9.9"
+                };
+
+                var packagePath = Path.Combine(workingDir, "packageA.1.0.0.nupkg");
+
+                SimpleTestPackageUtility.CreatePackages(workingDir, packageContext);
+
+                // install the package
+                using (var fileStream = File.OpenRead(packagePath))
+                {
+                    await PackageExtractor.InstallFromSourceAsync((stream) => 
+                        fileStream.CopyToAsync(stream, 4096, CancellationToken.None),
+                        new VersionFolderPathContext(new PackageIdentity("packageA", NuGetVersion.Parse("1.0.0")),
+                        packagesDir,
+                        logger,
+                        false,
+                        PackageSaveMode.Defaultv3,
+                        false,
+                        XmlDocFileSaveMode.None),
+                        CancellationToken.None);
+                }
+
+                // Act
+                var command = new RestoreCommand(request);
+                var result = await command.ExecuteAsync();
+
+                // Assert
+                Assert.True(1 == logger.Errors, logger.ShowErrors());
+                Assert.Contains("'packageA 1.0.0' package requires NuGet client version '9.9.9' or above", logger.ErrorMessages.Single());
+                Assert.False(result.Success);
+                Assert.Equal(0, result.GetAllInstalled().Count());
+                Assert.Equal(0, result.GetAllUnresolved().Count());
+                Assert.Equal(0, result.RestoreGraphs.Count());
+                Assert.Equal(0, result.ToolRestoreResults.Count());
+                Assert.Null(result.LockFile);
+            }
+        }
+
         [Fact]
         public async Task RestoreCommand_FrameworkImportRulesAreApplied()
         {
