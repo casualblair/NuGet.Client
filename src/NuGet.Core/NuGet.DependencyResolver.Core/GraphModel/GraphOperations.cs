@@ -143,7 +143,12 @@ namespace NuGet.DependencyResolver
 
         private static string PrettyPrint<TItem>(this GraphNode<TItem> node)
         {
-            return node.Key.Name + " " + node.Key.VersionRange?.ToNonSnapshotRange().PrettyPrint();
+            return
+                node.Key.Name +
+                " (" +
+                LibraryDependencyTargetUtils.GetFlagString(node.Key.TypeConstraint) +
+                ") "
+                + node.Key.VersionRange?.ToNonSnapshotRange().PrettyPrint();
         }
 
         private static bool TryResolveConflicts<TItem>(this GraphNode<TItem> root, List<VersionConflictResult<TItem>> versionConflicts)
